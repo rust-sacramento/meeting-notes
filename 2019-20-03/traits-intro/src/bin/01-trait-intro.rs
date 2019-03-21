@@ -1,8 +1,20 @@
 trait SayHi {
+    ///
     fn say_hi(&self);
 }
 
+#[derive(Default)]
 struct Foo;
+
+impl Foo {
+    fn bar(&self) {}
+}
+
+/*
+trait Default {
+    fn default() -> Self;
+}
+*/
 
 // simple trait implementation
 impl SayHi for Foo {
@@ -12,7 +24,7 @@ impl SayHi for Foo {
 }
 
 // implement a foreign trait for your own type
-impl Clone for Foo {
+impl ::std::clone::Clone for Foo {
     fn clone(&self) -> Foo {
         Foo
     }
@@ -51,8 +63,13 @@ mod submod {
 }
 
 fn main() {
-    Foo.say_hi();
+    let foo = Foo;
+    foo.say_hi();
     String::new().say_hi();
-    0u32.say_hi();
+    let int = 0u32;
+    int.say_hi();
     submod::say_hi_string();
+
+    let foo: Foo = Foo::default();
+    let foo: Foo = Default::default();
 }

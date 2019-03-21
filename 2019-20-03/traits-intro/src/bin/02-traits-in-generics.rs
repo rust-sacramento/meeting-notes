@@ -1,5 +1,7 @@
 trait SayHi {
-    fn say_hi(&self);
+    fn say_hi(&self) {
+
+    }
 }
 
 struct Foo;
@@ -15,7 +17,7 @@ fn say_hi_generic<T>(greeter: &T) where T: SayHi {
 }
 
 // called a blanket implementation
-impl<T> SayHi for T where T: std::fmt::Display {
+impl<T> SayHi for T where T: std::fmt::Display + std::fmt::Debug {
     fn say_hi(&self) {
         println!("SayHi blanket impl: {}", self);
     }
@@ -23,16 +25,14 @@ impl<T> SayHi for T where T: std::fmt::Display {
 
 // concrete implementations cannot conflict with blanket implementation
 // this is allowed with an upcoming feature called specialization
-/*
-impl SayHi for ::std::string::String {
-    ...
-}
-*/
+/*impl SayHi for ::std::string::String {
+    fn say_hi(&self) {}
+}*/
 
 
 fn main() {
     say_hi_generic(&Foo);
-    say_hi_generic("I'm a string!");
-    say_hi_generic(0u32);
+    say_hi_generic(&"I'm a string!");
+    say_hi_generic(&0u32);
 }
 
